@@ -9,6 +9,7 @@ const teamsRouter = require("./routes/teams");
 const todosRouter = require("./routes/todos");
 const { throw400, handleErrors } = require("./middleware/errors");
 const mongoose = require("mongoose");
+const setCORS = require("./middleware/setCORS");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(setCORS);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

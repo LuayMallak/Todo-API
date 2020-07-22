@@ -55,3 +55,18 @@ exports.deleteUser = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const loginUser = await User.findOne({ email });
+    if (!loginUser) throw new createError.Unauthorized("wrong email");
+    const isCorrect = await loginUser.checkPassword(password);
+    if (!isCorrect) throw new createError.Unauthorized("wrong password");
+
+    const token = await loginUser.createToken();
+    res.header("X-Auth-Token", token).status(200).send("You are logged-in");
+  } catch (err) {
+    next(err);
+  }
+};

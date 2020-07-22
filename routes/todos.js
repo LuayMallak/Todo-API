@@ -7,8 +7,13 @@ const {
   updateTodo,
   deleteTodo,
 } = require("../controllers/todoController");
+const authorizeToken = require("../middleware/tokenAuth");
 
-router.route("/").get(getTodos).post(addTodo);
-router.route("/:id").get(getOneTodo).put(updateTodo).delete(deleteTodo);
+router.route("/").get(getTodos).post(authorizeToken, addTodo);
+router
+  .route("/:id")
+  .get(getOneTodo)
+  .put(authorizeToken, updateTodo)
+  .delete(authorizeToken, deleteTodo);
 
 module.exports = router;
