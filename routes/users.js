@@ -8,13 +8,19 @@ const {
   deleteUser,
   loginUser,
 } = require("../controllers/userController");
+const authorizeToken = require("../middleware/tokenAuth");
+const authorizeAdmin = require("../middleware/adminAuth");
 
-router.route("/").get(getUsers);
+router.route("/").get(authorizeToken, authorizeAdmin, getUsers);
 
 router.route("/signup").post(addUser);
 
 router.route("/login").post(loginUser);
 
-router.route("/:id").get(getOneUser).put(updateUser).delete(deleteUser);
+router
+  .route("/:id")
+  .get(authorizeToken, getOneUser)
+  .put(authorizeToken, updateUser)
+  .delete(authorizeToken, deleteUser);
 
 module.exports = router;

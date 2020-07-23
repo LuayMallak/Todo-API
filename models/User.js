@@ -23,6 +23,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    enum: ["admin", "basic"],
+    default: "basic",
+  },
 });
 
 UserSchema.method("checkPassword", async function (loginPassword) {

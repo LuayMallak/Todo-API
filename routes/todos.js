@@ -8,11 +8,12 @@ const {
   deleteTodo,
 } = require("../controllers/todoController");
 const authorizeToken = require("../middleware/tokenAuth");
+const authorizeAdmin = require("../middleware/adminAuth");
 
-router.route("/").get(getTodos).post(authorizeToken, addTodo);
+router.route("/").get(authorizeToken, getTodos).post(authorizeToken, addTodo);
 router
   .route("/:id")
-  .get(getOneTodo)
+  .get(authorizeToken, getOneTodo)
   .put(authorizeToken, updateTodo)
   .delete(authorizeToken, deleteTodo);
 
